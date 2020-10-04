@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Book;
+use App\Rental;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class BookController extends Controller
+class RentalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $rental = Rental::all();
+        return view('admin.rental.index', compact('rental'));
     }
 
     /**
@@ -41,10 +43,10 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Book  $book
+     * @param  \App\Rental  $rental
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show(Rental $rental)
     {
         //
     }
@@ -52,10 +54,10 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Book  $book
+     * @param  \App\Rental  $rental
      * @return \Illuminate\Http\Response
      */
-    public function edit(Book $book)
+    public function edit(Rental $rental)
     {
         //
     }
@@ -64,10 +66,10 @@ class BookController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Book  $book
+     * @param  \App\Rental  $rental
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, Rental $rental)
     {
         //
     }
@@ -75,10 +77,10 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Book  $book
+     * @param  \App\Rental  $rental
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy(Rental $rental)
     {
         //
     }

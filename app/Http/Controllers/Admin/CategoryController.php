@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $category = Category::all();
+        return view('admin.kategori.index', compact('category'));
     }
 
     /**
@@ -24,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.kategori.create');
     }
 
     /**
@@ -35,7 +37,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       try {
+            $input = $request->all();
+
+            Category::create($input);
+
+            alert()->success('Berhasil!!!', 'Data Berhasil Disimpan!!!');
+
+            return redirect('admin/category');
+       } catch (\Throwable $th) {
+            alert()->error('Gagal!!!', 'Terjadi kesalahan!!!' . $th->getMessage());
+
+            return redirect()->back();
+       }
+        
     }
 
     /**
@@ -57,7 +72,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.kategori.edit', compact('category'));
     }
 
     /**
@@ -69,7 +84,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        try {
+            $input = $request->all();
+
+            $category->update($input);
+
+            alert()->success('Berhasil!!!', 'Data Berhasil Diubah!!!');
+
+            return redirect('admin/category');
+       } catch (\Throwable $th) {
+            alert()->error('Gagal!!!', 'Terjadi kesalahan!!!' . $th->getMessage());
+
+            return redirect()->back();
+       }
     }
 
     /**
@@ -80,6 +107,17 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+
+            $category->delete();
+
+            alert()->success('Berhasil!!!', 'Data Berhasil Dihapus!!!');
+
+            return redirect('admin/category');
+       } catch (\Throwable $th) {
+            alert()->error('Gagal!!!', 'Terjadi kesalahan!!!' . $th->getMessage());
+
+            return redirect()->back();
+       }
     }
 }
