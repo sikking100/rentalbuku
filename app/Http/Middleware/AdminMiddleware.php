@@ -16,7 +16,7 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         if ($request->user() && $request->user()->status != 0) {
-            return redirect('home');
+            return redirect('/');
         }
         return $next($request);
     }

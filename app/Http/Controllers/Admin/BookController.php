@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Classes\Upload;
 
 class BookController extends Controller
 {
+    public function __construct()
+    {
+        $this->upload = new Upload();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +31,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.buku.create');
     }
 
     /**
@@ -37,7 +42,23 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $input = $request->all();
+
+            if ($request->hasFile('foto')) {
+                $input['foto'] = $this->upload->uploadGambar($request, 'buku', 'foto');
+            }
+
+            Book::create($input);
+
+            alert()->success('Berhasil!!!', 'Data Berhasil Disimpan!!!');
+
+            return redirect('admin/books');
+        } catch (\Throwable $th) {
+            alert()->error('Gagal!!!', 'Terjadi kesalahan!!!' . $th->getMessage());
+
+            return redirect()->back();
+        }
     }
 
     /**
@@ -59,7 +80,7 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        return view('admin.buku.edit', compact('book'));
     }
 
     /**
@@ -71,7 +92,24 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        try {
+            $input = $request->all();
+
+            if ($request->hasFile('foto')) {
+                $this->upload->hapusGambar($book, 'buku', 'foto');
+                $input['foto'] = $this->upload->uploadGambar($request, 'buku', 'foto');
+            }
+
+            $book->update($input);
+
+            alert()->success('Berhasil!!!', 'Data Berhasil Diubah!!!');
+
+            return redirect('admin/books');
+        } catch (\Throwable $th) {
+            alert()->error('Gagal!!!', 'Terjadi kesalahan!!!' . $th->getMessage());
+
+            return redirect()->back();
+        }
     }
 
     /**
@@ -82,6 +120,19 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        try {
+
+            $this->upload->hapusGambar($book, 'buku', 'foto');
+
+            $book->delete();
+
+            alert()->success('Berhasil!!!', 'Data Berhasil Dihapus!!!');
+
+            return redirect('admin/books');
+        } catch (\Throwable $th) {
+            alert()->error('Gagal!!!', 'Terjadi kesalahan!!!' . $th->getMessage());
+
+            return redirect()->back();
+        }
     }
 }

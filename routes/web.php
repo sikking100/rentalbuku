@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -31,4 +27,10 @@ Route::group(['middleware' => ['administrator']], function ()
     Route::resource('admin/books', 'admin\BookController');
 
     Route::resource('admin/rental', 'admin\RentalController');
+});
+
+Route::group(['middleware' => ['web']], function ()
+{
+    Route::get('/', 'guest\BerandaController@index');
+    Route::get('/allbook', 'guest\AllController@index');
 });

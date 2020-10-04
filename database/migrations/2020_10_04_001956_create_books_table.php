@@ -17,6 +17,7 @@ class CreateBooksTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_categories');
             $table->string('name');
+            $table->text('foto')->nullable();
             $table->timestamps();
 
             $table->foreign('id_categories')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
